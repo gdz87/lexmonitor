@@ -1,0 +1,43 @@
+LexMonitor – maqueta funcional (DATOS FICTICIOS)
+Abrir: doble clic en index.html (funciona sin internet) o LexMonitor_demo.html (un solo archivo, ideal para celular).
+Instalar como app: servir la carpeta por HTTPS (p. ej. GitHub Pages/Netlify) y usar "Agregar a pantalla de inicio".
+Datos: se guardan en el navegador. Configuración > Exportar/Importar JSON o Restaurar demo.
+Simulado: monitoreo SAMAI, envíos WhatsApp/correo. Real: calculadora de términos, radicado, agenda, asistente, borradores, informes.
+
+=== Versión 2 (13/10/2026) ===
+Nuevo en LexMonitor:
+- Ficha de jurisprudencia: pestaña "Jurisprudencia" en cada proceso y en Borradores > Fichas. Campos fijos; lo vacío se muestra "No consta en el documento". Exporta .doc / imprime. Las 2 fichas de ejemplo (proceso p1) son FICTICIAS.
+- Borradores > Instrucciones para IA: 7 prompts (contestación, reposición, apelación, tutela, concepto, ficha de jurisprudencia, resumen de providencia), con relleno automático, anonimización y botón Copiar. Aviso de confidencialidad (secreto profesional, Ley 1581 de 2012).
+- Asistente de revisión: regla "Datos faltantes" (cliente, despacho, medio de control, fecha de presentación/notificación, apoderado). No supone valores. El proceso de ejemplo p9 la dispara.
+- Solicitudes del portal (bandeja): estado nueva / en trámite / respondida, vínculo a cliente y proceso, respuesta visible en el portal, adjuntos. Contador en tablero y campana.
+- Ficha del proceso > "Portal del cliente": casilla "Publicar en portal del cliente" y "Resumen para el cliente" por proceso y por actuación (es lo único que ve el cliente).
+- Clientes > ficha del cliente > "Generar acceso al portal" (documento + código).
+
+CONEXIÓN CON EL SITIO WEB (/sitio/) — SOLO DEMO
+- LexMonitor (raíz) y el sitio (/sitio/) se publican en el mismo origen y comparten el almacén js/shared-store.js
+  (localStorage 'lexportal.v1' + IndexedDB 'lexmonitor-files' para adjuntos). Esquema documentado al inicio de ese archivo.
+- LexMonitor proyecta al almacén SOLO lo publicado (procesos marcados, actuaciones con resumen, próximas fechas). Nunca notas internas ni documentos.
+- Con ambos abiertos en pestañas del MISMO navegador, el evento 'storage' y BroadcastChannel actualizan en vivo la bandeja y el portal.
+- LÍMITES: todo vive en el navegador del usuario. Otro dispositivo u otro navegador NO ve los datos; el "ingreso" del portal no es seguridad real
+  (los códigos están en el propio navegador); borrar datos del navegador lo borra todo. En el archivo único LexMonitor_demo.html no hay conexión.
+- EN PRODUCCIÓN (Fase 2 de la propuesta) esto se reemplaza por un servidor con API, base de datos, autenticación real (contraseñas/códigos cifrados,
+  sesiones, MFA para el abogado), control de acceso por cliente, almacenamiento seguro de archivos, registro de auditoría y avisos por correo/WhatsApp.
+
+=== Versión 4: Analizar con IA (Google Gemini) ===
+- Configuración > "Inteligencia artificial (Google Gemini)": pegar clave (aistudio.google.com/apikey), Probar conexión, Borrar clave. Guardada solo en localStorage ('lm_gemini_key'); nunca en el código ni en el respaldo JSON.
+- Borradores > Instrucciones para IA > panel "Analizar con IA": cargar texto/.txt/.pdf (pdf.js CDN)/.docx (mammoth CDN), resultado Markdown, copiar/descargar/guardar en Notas. Sin clave: resultado de EJEMPLO marcado como simulación.
+- Plan gratuito: Google puede usar los datos; no subir datos reales de clientes.
+
+=== Versión 5: Generar documento y plantillas con membrete ===
+- Analizar con IA tiene dos modos: "Analizar / comparar documentos" y "Generar documento" (tipo + proceso + instrucciones; faltantes como [COMPLETAR: ...]). Resultado editable (✎ Editar) antes de exportar.
+- Configuración > "Plantillas con membrete (Word)": .docx guardados en IndexedDB 'lexmonitor-membretes'; vista previa, predeterminada, eliminar. Marcador opcional {{CONTENIDO}}.
+- "📄 Exportar a Word" (JSZip CDN) en resultados de IA y en Borradores > Plantillas; conserva encabezado, pie, márgenes y estilos. Sin plantilla: genérica con el nombre de la firma.
+
+=== Versión 6 ===
+- Modelo Gemini automático: lista real de modelos de la clave (GET v1beta/models), preferencia flash vigentes (3.x primero; Google limita 2.5 a proyectos antiguos) y reintento automático ante error de modelo. Errores muestran el mensaje literal de Google.
+- v7: reintentos 2 s/5 s ante 503/saturación y cambio automático de modelo; SW red-primero con aviso "Hay una versión nueva · Actualizar".
+- v8: 429 por minuto con cuenta regresiva (RetryInfo/retry in Ns) y un reintento; cuota diaria o espera >30 s cambia de modelo; Probar conexión no gasta cuota si un modelo funcionó en las últimas 6 h.
+- v9: timeout por solicitud (45 s generar / 15 s pruebas y lista), al vencer cambia de modelo; plazo total 2 min (1 min en prueba); botón Cancelar y contador de segundos.
+- v10: streaming SSE (streamGenerateContent?alt=sse) con texto en vivo; plazo 20 s hasta el primer fragmento, tope 3 min; Automático prioriza lite; máx. 3 modelos; thinking al mínimo (thinkingLevel minimal/low, thinkingBudget 0 en 2.5) con reintento sin thinking si el modelo no lo admite; maxOutputTokens 4096.
+- v11: sección propia "🤖 Asistente IA" (#/asistente/<proceso>/<an|gen>/<instrucción>); el asistente de revisión pasa a "🧭 Revisión" (#/revision). Borradores solo Plantillas y Fichas; #/borradores/.../@ia redirige; botón "Mejorar con Asistente IA".
+- v13 (sin publicar): Configuración > IA con dos modos: "Clave propia" o "Código de prueba" (proxy Cloudflare Worker en /proxy; constante PROXY_URL en js/mod-ia.js). admin.html (no enlazada) administra los códigos.
