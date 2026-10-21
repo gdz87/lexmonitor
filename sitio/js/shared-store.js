@@ -1,4 +1,4 @@
-/* LexMonitor · Almacén compartido LexMonitor <-> Sitio web / Portal del cliente (DEMO, datos ficticios).
+/* LexMonitor · Almacén compartido LexMonitor <-> Sitio web / Portal del cliente (datos ficticios).
    Ambos se publican bajo el mismo origen y comparten este almacén en localStorage (y adjuntos en IndexedDB).
    En producción se reemplaza por un servidor con API y autenticación real (Fase 2).
 
@@ -23,7 +23,7 @@ const rel=n=>{const t=new Date();t.setHours(0,0,0,0);t.setDate(t.getDate()+n);re
 S.uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
 S.normDoc=s=>String(s||'').replace(/\D/g,'');
 /* Resúmenes para el cliente de los datos de ejemplo (los usa también LexMonitor para marcar lo publicado) */
-S.DEMO_PUB={
+S.EJEMPLO_PUB={
  p1:{resumen:'Demandamos la multa urbanística que le impusieron. El juzgado aceptó estudiar el caso y la entidad ya respondió. Lo siguiente es la audiencia inicial.',
      acts:{'Auto admite demanda':'El Tribunal aceptó estudiar su demanda (la "admitió"). Es un paso normal del inicio del proceso.',
            'Contestación de la demanda':'La entidad respondió la demanda y se opone. Lo revisaremos y lo discutiremos en la audiencia.',
@@ -33,23 +33,23 @@ S.DEMO_PUB={
  p5:{resumen:'La acción de tutela contra la EPS fue negada en primera instancia. Estamos evaluando impugnar (pedir que un juez superior la revise).',
      acts:{'Fallo niega amparo':'El juez negó la tutela. Estamos revisando la decisión para impugnarla dentro del plazo.'}}
 };
-S.DEMO_ACCESS=[{clienteId:'c2',docNorm:'00000002',doc:'C.C. 00.000.002',codigo:'DEMO-4821'},{clienteId:'c1',docNorm:'9000000010',doc:'NIT 900.000.001-0',codigo:'DEMO-7350'}];
+S.EJEMPLO_ACCESS=[{clienteId:'c2',docNorm:'00000002',doc:'C.C. 00.000.002',codigo:'EJEM-4821'},{clienteId:'c1',docNorm:'9000000010',doc:'NIT 900.000.001-0',codigo:'EJEM-7350'}];
 function seed(){
-  const P=(id,cli,rad,medio,desp,etapa)=>({id,clienteId:cli,radicado:rad,medio,despacho:desp,estado:'Activo',etapa,resumenCliente:S.DEMO_PUB[id].resumen,actualizado:rel(0)});
-  const pubs=[];const add=(pid,d,t)=>pubs.push({id:S.uid(),procesoId:pid,fecha:rel(d),titulo:t,resumen:S.DEMO_PUB[pid].acts[t]});
+  const P=(id,cli,rad,medio,desp,etapa)=>({id,clienteId:cli,radicado:rad,medio,despacho:desp,estado:'Activo',etapa,resumenCliente:S.EJEMPLO_PUB[id].resumen,actualizado:rel(0)});
+  const pubs=[];const add=(pid,d,t)=>pubs.push({id:S.uid(),procesoId:pid,fecha:rel(d),titulo:t,resumen:S.EJEMPLO_PUB[pid].acts[t]});
   add('p1',-160,'Auto admite demanda');add('p1',-40,'Contestación de la demanda');add('p1',-5,'Auto fija fecha de audiencia inicial');
   add('p6',-1150,'Admite');add('p6',-260,'Al despacho para sentencia');add('p5',-2,'Fallo niega amparo');
   return {version:1,updatedAt:new Date().toISOString(),seed:true,
-   firma:{nombre:'Firma de abogados (nombre por definir)',abogado:'Abogado(a) titular',email:'notificaciones@firma-ejemplo.test'},
+   firma:{nombre:'Despacho Ejemplo Ficticio',abogado:'Abogada Ejemplo Ficticia',email:'abogada@ejemplo.com'},
    clientes:[{id:'c1',nombre:'Inversiones Alto Ricaurte S.A.S. (ficticio)',doc:'NIT 900.000.001-0',docNorm:'9000000010'},{id:'c2',nombre:'Mariela Toquica Fonseca (ficticia)',doc:'C.C. 00.000.002',docNorm:'00000002'}],
    procesos:[P('p1','c1','15001233300020250012300','Nulidad y restablecimiento del derecho','Tribunal Administrativo de Boyacá – Sala de Decisión','Contestación de la demanda'),
      P('p6','c2','15001333300520220011200','Nulidad y restablecimiento del derecho','Juzgado 5.º Administrativo del Circuito de Tunja','Sentencia de primera instancia'),
      P('p5','c2','15238400300120260021800','Acción de tutela','Juzgado 1.º Civil Municipal de Duitama (tutela)','Fallo de primera instancia')],
    publicaciones:pubs,
    eventos:[{id:'e1',procesoId:'p1',fecha:rel(9),hora:'09:00',titulo:'Audiencia inicial (art. 180 CPACA)'}],
-   accesos:S.DEMO_ACCESS.map(a=>({clienteId:a.clienteId,docNorm:a.docNorm,codigo:a.codigo,creado:rel(-3),activo:true})),
-   solicitudes:[{id:'s-demo1',fecha:rel(-2)+'T10:15',origen:'portal',clienteId:'c2',procesoId:'p6',nombre:'Mariela Toquica Fonseca (ficticia)',email:'mariela.t@ejemplo.test',tel:'',asunto:'¿Debo llevar algún documento?',mensaje:'Buenos días, ¿necesitan algún documento adicional para la sentencia? (mensaje ficticio)',adjuntos:[],autorizacionDatos:true,estado:'respondida',respuesta:'Por ahora no se necesita nada. Le avisaremos apenas el juez dicte sentencia. (respuesta ficticia)',respondidaEn:rel(-1)+'T16:40',leidaCliente:true},
-     {id:'s-demo2',fecha:rel(0)+'T08:05',origen:'contacto',clienteId:'',procesoId:'',nombre:'Persona interesada (ficticia)',email:'interesado@ejemplo.test',tel:'300 000 0099',asunto:'Consulta sobre una sanción de tránsito',mensaje:'Me impusieron una sanción y quiero saber si se puede demandar. (mensaje ficticio)',adjuntos:[],autorizacionDatos:true,estado:'nueva',respuesta:'',respondidaEn:''}]};
+   accesos:S.EJEMPLO_ACCESS.map(a=>({clienteId:a.clienteId,docNorm:a.docNorm,codigo:a.codigo,creado:rel(-3),activo:true})),
+   solicitudes:[{id:'s-ej1',fecha:rel(-2)+'T10:15',origen:'portal',clienteId:'c2',procesoId:'p6',nombre:'Mariela Toquica Fonseca (ficticia)',email:'mariela.t@ejemplo.test',tel:'',asunto:'¿Debo llevar algún documento?',mensaje:'Buenos días, ¿necesitan algún documento adicional para la sentencia? (mensaje ficticio)',adjuntos:[],autorizacionDatos:true,estado:'respondida',respuesta:'Por ahora no se necesita nada. Le avisaremos apenas el juez dicte sentencia. (respuesta ficticia)',respondidaEn:rel(-1)+'T16:40',leidaCliente:true},
+     {id:'s-ej2',fecha:rel(0)+'T08:05',origen:'contacto',clienteId:'',procesoId:'',nombre:'Persona interesada (ficticia)',email:'interesado@ejemplo.test',tel:'300 000 0099',asunto:'Consulta sobre una sanción de tránsito',mensaje:'Me impusieron una sanción y quiero saber si se puede demandar. (mensaje ficticio)',adjuntos:[],autorizacionDatos:true,estado:'nueva',respuesta:'',respondidaEn:''}]};
 }
 S.load=function(){ try{ const s=localStorage.getItem(KEY); if(s){ const d=JSON.parse(s); if(d&&d.version) return d; } }catch(e){} const d=seed(); S.save(d,true); return d; };
 let bc=null; try{ if('BroadcastChannel' in window) bc=new BroadcastChannel(CH); }catch(e){}

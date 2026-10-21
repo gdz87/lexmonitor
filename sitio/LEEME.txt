@@ -1,7 +1,6 @@
-Sitio web de la firma + Portal del cliente — DEMO con datos ficticios
-- Estático, HTML/CSS/JS sin dependencias ni CDN. Edite nombre de firma, dirección, horarios, etc. en js/config.js.
-- Secciones: inicio, servicios, sobre la firma (placeholder), preguntas frecuentes, contacto (crea una solicitud), política de datos (texto base "validar con el abogado").
-- Portal del cliente (#/portal): ingreso con cédula/NIT + código que genera el abogado en LexMonitor > Clientes. Ve solo lo publicado.
-- Asistente virtual por reglas (js/chat.js), sin IA externa. Información general, no asesoría jurídica. Si no sabe, ofrece crear una solicitud.
-- Credenciales de prueba (ficticias): C.C. 00.000.002 / DEMO-4821 (Mariela Toquica Fonseca) · NIT 900.000.001-0 / DEMO-7350 (Inversiones Alto Ricaurte S.A.S.).
-- Datos compartidos con LexMonitor mediante js/shared-store.js (copia del archivo de LexMonitor). Ver LEEME.txt de LexMonitor para límites y Fase 2.
+Sitio web de la abogada + entrada al Portal del cliente · v2 (datos ficticios)
+- Estático, HTML/CSS/JS sin CDN. Estilo «Expediente editorial» del Portal v1.1 (fuentes en fonts/, iconos en icons/).
+- Datos editables en js/config.js (incluye las rutas: portal ../portal/index.html y LexMonitor ../).
+- Para publicar, esta carpeta reemplaza a repo_publico/sitio/ (el portal debe estar en repo_publico/portal/).
+- Accesos de prueba ficticios: C.C. 00.000.002 / EJEM-4821 · NIT 900.000.001-0 / EJEM-7350.
+- Pruebas: servir una copia del repo con sitio -> v2 en :8811 y ejecutar node ../test/e2e_v2.js
