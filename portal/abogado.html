@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%231F4D3A%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2216%22 text-anchor=%22middle%22 fill=%22%23F4EFE6%22 font-family=%22serif%22%3EL%3C/text%3E%3C/svg%3E"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portal del cliente · Plataforma del abogado · LexMonitor</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{--bg:#f4f6fa;--s:#fff;--s2:#eef1f7;--t:#18202e;--m:#5a6578;--b:#dde2ec;--p:#1f4fa3;--ok:#1b7f4b;--warn:#a35d00;--r:14px;--sh:0 1px 2px rgba(16,24,40,.06),0 4px 14px rgba(16,24,40,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px/1.5 'Inter Tight',system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.ico{width:18px;height:18px;vertical-align:-4px;flex:none}
+.lay{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
+.side{background:var(--s);border-right:1px solid var(--b);padding:18px 12px;position:sticky;top:0;height:100vh}
+.logo{font-weight:700;font-size:18px;padding:4px 10px 18px;display:flex;gap:8px;align-items:center;color:var(--p)}
+.side a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:10px;text-decoration:none;color:var(--t);margin-bottom:2px}
+.side a:hover{background:var(--s2)}.side a.on{background:#e6edfa;color:var(--p);font-weight:600}
+.main{padding:22px 28px 60px;max-width:1040px}
+.hdr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.hdr h1{font-size:22px;margin:0;flex:1;min-width:220px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);box-shadow:var(--sh);padding:18px;margin-bottom:16px}
+.card h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.b{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--b);background:var(--s);border-radius:10px;padding:9px 14px;font-weight:600;min-height:42px;text-decoration:none;color:var(--t)}
+.b:hover{border-color:var(--p)}
+.b.p{background:var(--p);color:#fff;border-color:var(--p)}.b.p:hover{background:#173d80}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:13px}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.kv div{background:var(--s2);border-radius:10px;padding:10px 12px}.kv small{display:block;color:var(--m);font-size:12px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--b);vertical-align:top;font-size:14px}th{color:var(--m);font-weight:600;font-size:12.5px}
+.pill{font-size:12px;border-radius:999px;padding:2px 9px;background:#e7f5ee;color:var(--ok);font-weight:600;white-space:nowrap}
+.pill.n{background:#fff3e0;color:var(--warn)}
+form .g{display:grid;grid-template-columns:160px 1fr;gap:12px}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--m);margin:10px 0 4px}
+input,select,textarea{width:100%;border:1px solid var(--b);border-radius:10px;padding:10px 12px;background:#fff}
+textarea{min-height:76px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid #2f6fe0;outline-offset:0;border-color:transparent}
+.chk{display:flex;gap:8px;align-items:center;font-weight:500;color:var(--t);font-size:14px}.chk input{width:auto}
+.err{color:#b42318;font-size:13px;min-height:18px;margin:8px 0}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;place-items:center;z-index:50;padding:16px}
+.modal.si{display:grid;animation:f .2s}@keyframes f{from{opacity:0}}
+.mbox{background:#fff;border-radius:18px;max-width:440px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:u .35s cubic-bezier(.2,.8,.2,1)}@keyframes u{from{transform:translateY(14px) scale(.98);opacity:0}}
+.mbox h3{margin:0 0 4px;font-size:19px}
+.qr{display:grid;place-items:center;margin:16px 0;padding:14px;border:1px solid var(--b);border-radius:14px}
+.qr canvas{width:220px;height:220px;image-rendering:pixelated}
+.link{display:flex;gap:8px}.link input{font-family:'IBM Plex Mono',monospace;font-size:12.5px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;background:#18202e;color:#fff;padding:11px 16px;border-radius:12px;transition:.3s;z-index:90;font-size:14px;pointer-events:none}
+.toast.si{opacity:1;transform:translate(-50%,0)}
+.msg{border:1px solid var(--b);border-radius:12px;padding:10px 12px;margin-bottom:8px}.msg small{color:var(--m)}
+.vacio{color:var(--m);font-size:14px}
+tr.nuevo td{animation:hl 2.5s}@keyframes hl{0%,50%{background:#fff7d6}}
+@media(max-width:820px){.lay{grid-template-columns:1fr}.side{display:none}.main{padding:14px}.kv{grid-template-columns:1fr 1fr}form .g{grid-template-columns:1fr}.hide-s{display:none}.hdr h1{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="lay">
+ <aside class="side">
+  <div class="logo"><svg class="ico" style="width:22px;height:22px"><use href="#i-scale"/></svg>LexMonitor</div>
+  <a href="#ficha" class="on"><svg class="ico"><use href="#i-briefcase"/></svg>Proceso</a>
+  <a href="#actuaciones"><svg class="ico"><use href="#i-list"/></svg>Actuaciones</a>
+  <a href="#registrar"><svg class="ico"><use href="#i-plus"/></svg>Registrar actuación</a>
+  <a href="#mensajes"><svg class="ico"><use href="#i-message-circle"/></svg>Mensajes del cliente</a>
+  <a href="index.html" target="_blank" rel="noopener"><svg class="ico"><use href="#i-external-link"/></svg>Ver portal del cliente</a>
+ </aside>
+ <main class="main">
+  <div class="hdr"><h1 id="tit">Portal del cliente</h1>
+   <button class="b" id="reset" title="Vuelve a los datos de ejemplo"><svg class="ico"><use href="#i-arrow-left"/></svg><span class="hide-s">Restablecer ejemplo</span></button>
+   <button class="b p" id="compartir"><svg class="ico"><use href="#i-share-2"/></svg>Compartir con el cliente</button></div>
+
+  <div class="card" id="ficha"><h2><svg class="ico"><use href="#i-briefcase"/></svg>Proceso publicado</h2>
+   <div class="kv" id="kv"></div></div>
+
+  <div class="card" id="registrar"><h2><svg class="ico"><use href="#i-plus"/></svg>Registrar actuación</h2>
+   <form id="fAct" novalidate>
+    <div class="g"><div><label for="aFecha">Fecha</label><input type="date" id="aFecha"></div>
+     <div><label for="aTipo">Tipo</label><select id="aTipo"><option>Auto</option><option>Memorial</option><option>Audiencia</option><option>Notificación</option><option>Traslado</option><option>Estado</option></select></div></div>
+    <label for="aTitulo">Título para el cliente</label><input id="aTitulo" maxlength="90" placeholder="Ej.: El juzgado fijó fecha de audiencia">
+    <label for="aExp">Explicación sencilla</label><textarea id="aExp" maxlength="320" placeholder="Qué significa para su cliente, en palabras sencillas."></textarea>
+    <label class="chk"><input type="checkbox" id="aPub" checked>Publicar en el portal del cliente</label>
+    <p class="err" id="aErr" role="alert"></p>
+    <button class="b p" type="submit" id="aGuardar"><svg class="ico"><use href="#i-check"/></svg>Registrar actuación</button>
+   </form></div>
+
+  <div class="card" id="actuaciones"><h2><svg class="ico"><use href="#i-list"/></svg>Actuaciones</h2>
+   <table><thead><tr><th>Fecha</th><th>Actuación</th><th class="hide-s">Tipo</th><th>Portal</th></tr></thead><tbody id="tb"></tbody></table></div>
+
+  <div class="card" id="mensajes"><h2><svg class="ico"><use href="#i-message-circle"/></svg>Mensajes del cliente</h2><div id="ml"></div></div>
+ </main>
+</div>
+
+<div class="modal" id="mod" role="dialog" aria-modal="true" aria-labelledby="mT"><div class="mbox">
+ <h3 id="mT">Compartir con el cliente</h3>
+ <p style="margin:0;color:var(--m);font-size:14px" id="mSub"></p>
+ <div class="qr"><canvas id="qr" width="220" height="220" aria-label="Código QR del enlace"></canvas></div>
+ <div class="link"><input id="enl" readonly aria-label="Enlace del portal"><button class="b" id="copiar" aria-label="Copiar enlace"><svg class="ico"><use href="#i-copy"/></svg></button></div>
+ <p style="font-size:12.5px;color:var(--m)">El cliente solo ve lo que usted marque como publicado.</p>
+ <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><button class="b" id="nuevoEnl">Generar otro enlace</button><a class="b" id="abrirP" target="_blank" rel="noopener"><svg class="ico"><use href="#i-external-link"/></svg>Abrir</a><button class="b p" id="cerrar">Listo</button></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="icons/sprite.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="shared.js"></script>
+<script>
+(function(){
+const L=LMP,E=L.esc,$=s=>document.querySelector(s);let P=L.load();
+const toast=t=>{const x=$('#toast');x.textContent=t;x.classList.add('si');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove('si'),2400)};
+function render(nuevo){
+ $('#kv').innerHTML=[['Cliente',P.cliente],['Radicado','<span class="mono">'+L.fmtRad(P.radicado)+'</span>'],['Juzgado',P.juzgado],['Contraparte',P.contraparte],['Etapa',P.etapa],['Última revisión',L.larga(P.revisado)]].map(([k,v])=>'<div><small>'+k+'</small>'+(k==='Radicado'?v:E(v))+'</div>').join('');
+ $('#tb').innerHTML=[...P.actuaciones].sort((a,b)=>b.fecha.localeCompare(a.fecha)).map(a=>'<tr class="'+(a.id===nuevo?'nuevo':'')+'"><td class="mono">'+L.corta(a.fecha)+'</td><td><b>'+E(a.titulo)+'</b><br><span style="color:var(--m);font-size:13px">'+E(a.exp)+'</span></td><td class="hide-s">'+E(a.tipo)+'</td><td>'+(a.oculta?'<span class="pill n">Interna</span>':'<span class="pill">Publicada</span>')+'</td></tr>').join('');
+ const M=L.msgs().slice().reverse();$('#ml').innerHTML=M.length?M.map(m=>'<div class="msg"><b>'+E(m.tema)+'</b> · <small>'+E(m.nombre)+' · '+new Date(m.fecha).toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'})+' · <span class="mono">'+E(m.ref)+'</span></small><div>'+E(m.texto)+'</div></div>').join(''):'<p class="vacio">Todavía no hay mensajes del cliente.</p>';
+}
+function token(){const c='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';const a=crypto.getRandomValues(new Uint8Array(8));a.forEach(x=>s+=c[x%c.length]);return s.slice(0,4)+'-'+s.slice(4)}
+function enlace(nuevo){let t=localStorage.getItem(L.K.share);if(!t||nuevo){t=token();localStorage.setItem(L.K.share,t)}
+ return 'https://lexmonitor.co/portal/ejemplo?acceso='+t}
+const local=t=>new URL('index.html?acceso='+t,location.href).href;
+function pintarQR(url){const q=qrcode(0,'M');q.addData(url);q.make();const n=q.getModuleCount(),cv=$('#qr'),x=cv.getContext('2d'),m=4,s=Math.floor(220/(n+m*2)),o=Math.floor((220-s*n)/2);
+ x.fillStyle='#fff';x.fillRect(0,0,220,220);x.fillStyle='#18202e';for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))x.fillRect(o+c*s,o+r*s,s,s)}
+function abrir(nuevo){const u=enlace(nuevo);$('#enl').value=u;$('#abrirP').href=local(localStorage.getItem(L.K.share));pintarQR(u);$('#mSub').textContent=P.cliente+' · '+L.fmtRad(P.radicado);$('#mod').classList.add('si')}
+$('#compartir').onclick=()=>abrir(false);$('#nuevoEnl').onclick=()=>{abrir(true);toast('Se generó un enlace nuevo; el anterior deja de usarse.')};
+$('#cerrar').onclick=()=>$('#mod').classList.remove('si');$('#mod').onclick=e=>{if(e.target.id==='mod')$('#mod').classList.remove('si')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#mod').classList.remove('si')});
+$('#copiar').onclick=()=>{$('#enl').select();(navigator.clipboard?navigator.clipboard.writeText($('#enl').value):Promise.reject()).catch(()=>{try{document.execCommand('copy')}catch(_){}}).finally(()=>toast('Enlace copiado'))};
+$('#reset').onclick=()=>{if(!confirm('¿Volver a los datos de ejemplo? Se borran las actuaciones y mensajes agregados.'))return;P=L.reset();render();toast('Datos de ejemplo restablecidos')};
+$('#aFecha').value=L.hoyISO();
+$('#fAct').onsubmit=e=>{e.preventDefault();const f=$('#aFecha').value,t=$('#aTitulo').value.trim(),x=$('#aExp').value.trim();
+ if(!f||!t||x.length<10){$('#aErr').textContent=!f?'Indique la fecha.':!t?'Escriba un título para el cliente.':'Agregue una explicación sencilla (mínimo 10 caracteres).';return}
+ if(!L.habil(L.parse(f))){$('#aErr').textContent='Esa fecha no es día hábil en Colombia. Revísela.';return}
+ $('#aErr').textContent='';const a={id:'a'+Date.now(),fecha:f,tipo:$('#aTipo').value,titulo:t,exp:x,oculta:!$('#aPub').checked,rev:L.hoyISO()};
+ P=L.load();P.actuaciones.push(a);P.revisado=L.hoyISO();
+ // el portal solo muestra las publicadas: se guardan internas aparte
+ const pub=JSON.parse(JSON.stringify(P));pub.actuaciones=pub.actuaciones.filter(z=>!z.oculta);
+ localStorage.setItem('lmportal_internas',JSON.stringify(P.actuaciones.filter(z=>z.oculta)));
+ L.save(pub);P=pub;P.actuaciones=P.actuaciones.concat(JSON.parse(localStorage.getItem('lmportal_internas')||'[]'));
+ render(a.id);$('#fAct').reset();$('#aFecha').value=L.hoyISO();$('#aPub').checked=true;toast(a.oculta?'Actuación registrada (interna)':'Actuación registrada y publicada en el portal')};
+function cargar(){P=L.load();P.actuaciones=P.actuaciones.concat(JSON.parse(localStorage.getItem('lmportal_internas')||'[]'))}
+addEventListener('storage',e=>{if(e.key===L.K.msgs){render();toast('Nuevo mensaje del cliente')}else if(e.key===L.K.proc){cargar();render()}});
+document.querySelectorAll('.side a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{document.querySelectorAll('.side a').forEach(x=>x.classList.remove('on'));a.classList.add('on')}));
+cargar();render();
+})();
+</script>
+<div class="lm-ficticio" role="note" style="position:fixed;right:8px;bottom:8px;z-index:2147483647;background:rgba(27,27,27,.82);color:#F4EFE6;font:600 11px/1.3 system-ui,sans-serif;padding:4px 9px;border-radius:999px;pointer-events:none;letter-spacing:.02em">Datos ficticios con fines de demostración</div>
+</body></html>
