@@ -10,5 +10,6 @@ window.SITIO_CONFIG={
   abogado:'Abogada Ejemplo Ficticia',
   tarjeta:'T.P. 000.000',
   portal:'../portal/index.html',
-  lexmonitor:'../'
+  lexmonitor:'../',
+  proxy:'https://lexmonitor-proxy.gdz87.workers.dev' /* servidor del portal (Worker de LexMonitor) */
 };

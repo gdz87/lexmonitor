@@ -54,9 +54,9 @@ const SEMILLA={
     {id:'d3',nombre:'Demanda radicada (copia)',fecha:'2026-08-04',paginas:1,pdf:'docs/demanda_ejemplo-00.pdf'}
   ]
 };
-function load(){try{const p=JSON.parse(localStorage.getItem(K.proc));if(p&&p.radicado&&localStorage.getItem(K.ver)===VER)return p}catch(e){}
+function load(){if(window.LMP_SRV)return window.LMP_SRV;/* v19.9: datos reales del servidor, solo en memoria */try{const p=JSON.parse(localStorage.getItem(K.proc));if(p&&p.radicado&&localStorage.getItem(K.ver)===VER)return p}catch(e){}
   const p=JSON.parse(JSON.stringify(SEMILLA));save(p);return p}
-function save(p){localStorage.setItem(K.proc,JSON.stringify(p));localStorage.setItem(K.ver,VER)}
+function save(p){if(window.LMP_SRV)return;localStorage.setItem(K.proc,JSON.stringify(p));localStorage.setItem(K.ver,VER)}
 function reset(){localStorage.removeItem(K.proc);localStorage.removeItem(K.msgs);localStorage.removeItem(K.share);localStorage.removeItem('lmportal_internas');return load()}
 const msgs=()=>{try{return JSON.parse(localStorage.getItem(K.msgs))||[]}catch(e){return[]}};
 function addMsg(m){const l=msgs();l.push(m);localStorage.setItem(K.msgs,JSON.stringify(l))}

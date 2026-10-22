@@ -19,7 +19,7 @@ function aviso(t){const a=$('#aviso');a.innerHTML='<svg class="ico"><use href="#
 const color=n=>n<0?'piedra':n<=5?'lacre':n<=15?'ocre':'toga';
 function cabecera(){
   const h=new Date(),hi=L.hoyISO();
-  $('#hoy').textContent=L.conDia(hi)+' de '+h.getFullYear()+' · Ciudad Ejemplo';
+  $('#hoy').textContent=L.conDia(hi)+' de '+h.getFullYear()+(window.LMP_SRV?'':' · Ciudad Ejemplo');
   $('#exp').textContent='Expediente '+P.radicado.slice(12,16)+'-'+P.radicado.slice(16,21);
   $('#kicker').textContent=P.clase;
   const [a,b]=P.titulo.split(' contra ');
@@ -30,8 +30,8 @@ function cabecera(){
   $('#selloMes').textContent=String(h.getFullYear());
   $('#estado').textContent=P.estado;$('#estadoTxt').textContent=P.estadoTxt;
   $('#revisado').textContent='Su abogada revisó el expediente el '+L.larga(P.revisado).replace(/ de \d{4}$/,'')+'.';
-  const D=[['Juzgado',P.juzgado],['Clase de proceso',P.clase],['Demandante (usted)',P.cliente],['Demandada',P.contraparte],['Valor reclamado',P.cuantia],['Etapa actual',P.etapa]];
-  $('#datos').innerHTML=D.map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+E(v)+'</dd></div>').join('');
+  const D=[['Juzgado',P.juzgado],['Clase de proceso',P.clase],[window.LMP_SRV?'Cliente (usted)':'Demandante (usted)',P.cliente],['Demandada',P.contraparte],['Valor reclamado',P.cuantia],['Etapa actual',P.etapa]];
+  $('#datos').innerHTML=D.filter(([k,v])=>v).map(([k,v])=>'<div><dt>'+k+'</dt><dd>'+E(v)+'</dd></div>').join('');
   $('#etapas').innerHTML=P.etapas.map((e,i)=>'<li class="'+(i<P.etapaIdx?'ok':i===P.etapaIdx?'ya':'')+'">'+E(e)+'</li>').join('');
 }
 function hitos(){
@@ -62,7 +62,7 @@ function docs(){
 function abrirDoc(id){const d=P.documentos.find(x=>x.id===id);if(!d)return;$('#vTit').textContent=d.nombre;$('#vImg').src=d.pdf.replace('.pdf','-1.png');$('#vImg').alt='Página 1 de '+d.nombre;$('#vDesc').href=d.pdf;$('#visor').classList.add('si');$('#vCerrar').focus()}
 function cerrarDoc(){$('#visor').classList.remove('si')}
 function abogado(){const a=P.abogado,ini=a.nombre.split(' ').filter((_,i)=>i===0||i===1).map(s=>s[0]).join('');
-  $('#abogCard').innerHTML='<div class="retrato">'+ini+'</div><div><h3>Dra. '+E(a.nombre)+'</h3><p class="cargo">'+E(a.titulo)+' · <span class="mono" style="font-size:13px">'+E(a.tp)+'</span></p><ul class="contacto">'+
+  $('#abogCard').innerHTML='<div class="retrato">'+ini+'</div><div><h3>'+(window.LMP_SRV?'':'Dra. ')+E(a.nombre)+'</h3><p class="cargo">'+E(a.titulo)+' · <span class="mono" style="font-size:13px">'+E(a.tp)+'</span></p><ul class="contacto">'+
   '<li><svg class="ico"><use href="#i-phone"/></svg><a class="ul" href="tel:+57'+a.tel.replace(/\s/g,'')+'">'+E(a.tel)+'</a></li><li><svg class="ico"><use href="#i-mail"/></svg><a class="ul" href="mailto:'+E(a.correo)+'">'+E(a.correo)+'</a></li>'+
   '<li><svg class="ico"><use href="#i-map-pin"/></svg>'+E(a.oficina)+'</li><li><svg class="ico"><use href="#i-clock"/></svg>'+E(a.horario)+'</li></ul>'+
   '<p style="font-size:14px;color:#555;margin:12px 0 0">Ella lleva su caso desde la radicación de la demanda.</p></div>';
