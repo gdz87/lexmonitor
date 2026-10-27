@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://accounts.google.com; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://lexmonitor-proxy.gdz87.workers.dev https://generativelanguage.googleapis.com https://api.openai.com https://api.anthropic.com https://api.x.ai https://gmail.googleapis.com https://www.googleapis.com https://oauth2.googleapis.com https://accounts.google.com https://consultaprocesos.ramajudicial.gov.co:448 https://*.ramajudicial.gov.co https://samai.consejodeestado.gov.co https://www.datos.gov.co https://cdn.jsdelivr.net http://127.0.0.1:8787 http://localhost:8787; frame-src https://accounts.google.com blob:; worker-src 'self' blob: https://cdn.jsdelivr.net; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow"><title>LexMonitor Admin</title><meta name="theme-color" content="#0f766e">
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon.svg"><link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="LM Admin">
@@ -16,7 +16,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:.7rem 1r
 <header><img src="icons/icon-192.png" alt=""><div><h1>LexMonitor Admin</h1><p>Lanzador de Germán · accesos rápidos</p></div></header>
 <nav class="grid" aria-label="Accesos">
  <a class="t big" id="t-app" href="../app/"><span class="i">⚖</span><b>Mi LexMonitor</b><small id="t-app-s">App completa con mi licencia de propietario</small></a>
- <a class="t" id="t-lic" href="../licencias.html"><span class="i">🔑</span><b>Licencias y solicitudes</b><small>Firmas, usuarios y «Pedir mi usuario»</small><span class="n hide" id="n-sol" aria-label="solicitudes nuevas"></span></a>
+ <a class="t" id="t-lic" href="../licencias.html"><span class="i">🔑</span><b>Licencias y solicitudes</b><small>Firmas, usuarios y «Pedir mi usuario»</small><span class="n hide" id="n-sol" aria-label="solicitudes nuevas"></span><span class="n hide" id="n-venc" aria-label="licencias por vencer y vencidas recientes" style="background:#f97316;right:auto;left:.5rem"></span></a>
  <a class="t" href="../admin.html"><span class="i">🛠</span><b>Panel de administrador</b><small>Códigos de invitación LEX</small></a>
  <a class="t" href="../" target="_blank" rel="noopener"><span class="i">🧪</span><b>Demo pública</b><small>Lo que ven los visitantes</small></a>
  <a class="t" href="../videos.html" target="_blank" rel="noopener"><span class="i">🎬</span><b>Videos</b><small>Tutoriales de LexMonitor</small></a>
@@ -37,5 +37,7 @@ try{ if(!localStorage.getItem('lm_ia_codigo')&&!localStorage.getItem('lm_sesion'
 /* Contador: solo lee el token que el panel ya dejó en ESTA sesión (sessionStorage). No lo guarda ni lo copia. */
 (async()=>{ try{ const t=sessionStorage.getItem('lm_adm_tok'), s=(sessionStorage.getItem('lm_adm_srv')||'').replace(/\/$/,''); if(!t||!/^https:\/\//.test(s)) return;
   const r=await fetch(s+'/admin/solicitudes',{headers:{Authorization:'Bearer '+t}}); if(!r.ok) return; const j=await r.json(); const n=document.getElementById('n-sol');
-  if(j.nuevas>0){ n.textContent=j.nuevas; n.classList.remove('hide'); } }catch(e){} })();
+  if(j.nuevas>0){ n.textContent=j.nuevas; n.classList.remove('hide'); }
+  /* v19.8.2: vencimientos (por vencer 24 h + vencidas recientes) registrados por el cron */
+  const ra=await fetch(s+'/admin/alertas',{headers:{Authorization:'Bearer '+t}}); if(ra.ok){ const a=await ra.json(), v=document.getElementById('n-venc'); if(a.total>0){ v.textContent='⏰ '+a.porVencer.length+' · ⛔ '+a.vencidas.length; v.classList.remove('hide'); } } }catch(e){} })();
 </script></body></html>
