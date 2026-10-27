@@ -1,4 +1,4 @@
-const C='lexmonitor-app-v19.10.1-921ab4e0';const F=['./','index.html','css/app.css','js/lexmonitor.js','manifest.webmanifest','icons/icon.svg','icons/icon-192.png','icons/icon-512.png'];
+const C='lexmonitor-app-v19.10.2-eeba013c';const F=['./','index.html','css/app.css','js/lexmonitor.js','manifest.webmanifest','icons/icon.svg','icons/icon-192.png','icons/icon-512.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()));});
 self.addEventListener('message',e=>{if(e.data==='skip')self.skipWaiting();else if(e.data==='version'&&e.ports&&e.ports[0])e.ports[0].postMessage({v:C});});
